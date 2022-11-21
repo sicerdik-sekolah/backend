@@ -30,6 +30,10 @@ let akunSchema = Schema(
       type: String,
       enum: ["kasubag", "staff", "sekretaris"],
     },
+    statusAkun:{
+      type: Boolean,
+      default: true
+    }
   },
   {
     timestamps: true,
