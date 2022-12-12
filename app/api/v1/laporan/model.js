@@ -97,6 +97,52 @@ const laporanSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  tempat_tgl_lahir: {
+    type: String,
+    default: "",
+    required: [true, "Masukkan tempat tanggal lahir"],
+  },
+  nis: {
+    type: String,
+    default: "",
+    required: [true, "Masukkan nis"],
+  },
+  jenis_kelamin: {
+    type: String,
+    enum: ["pria", "wanita"],
+    default: "",
+    required: [true, "Masukan alamat"],
+  },
+  alasan_pindah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan keterangan alasan pindah"],
+  },
+  kelas: {
+    type: String,
+    default: "",
+    required: [true, "Masukan kelas"],
+  },
+  nama_orang_tua: {
+    type: String,
+    default: "",
+    required: [true, "Masukan nama orang tua"],
+  },
+  pekerjaan_orang_tua: {
+    type: String,
+    default: "",
+    required: [true, "Masukan pekerjaan orang tua"],
+  },
+  nomor_naskah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan jenis naskah"],
+  },
+  jenis_surat: {
+    type: String,
+    default: "",
+    required: [true, "Masukan jenis surat"],
+  },
 });
 
 module.exports = mongoose.model("Laporan", laporanSchema);

@@ -20,6 +20,15 @@ const createLaporan = async (req, res, next) => {
       tujuan_sekolah,
       hal,
       nomor_laporan,
+      tempat_tgl_lahir,
+      nis,
+      jenis_kelamin,
+      alasan_pindah,
+      kelas,
+      nama_orang_tua,
+      pekerjaan_orang_tua,
+      nomor_naskah,
+      jenis_surat,
     } = req.body;
     console.log("req.files >>>> ", req.files);
     console.log("path surat_pindah", req.files["surat_pindah"][0].filename);
@@ -54,6 +63,15 @@ const createLaporan = async (req, res, next) => {
           nomor_laporan,
           surat_pindah: req.files["surat_pindah"][0].filename,
           surat_ortu: req.files["surat_ortu"][0].filename,
+          tempat_tgl_lahir,
+          nis,
+          jenis_kelamin,
+          alasan_pindah,
+          kelas,
+          nama_orang_tua,
+          pekerjaan_orang_tua,
+          nomor_naskah,
+          jenis_surat,
           // surat_plh,
         });
       }
@@ -204,6 +222,23 @@ const ubahStatusRevisi = async (req, res, next) => {
   }
 };
 
+const updateDataLaporanVerifikasi = async (req, res, next) => {
+  try {
+    const { nomor_naskah, jenis_surat, yang_menandatangani } = req.body;
+    const result = await Laporan.findOne({ _id: id });
+
+    if (!result) {
+      console.log("No Laporan with the id ", id);
+    }
+    result.yang_menandatangani = yang_menandatangani;
+    result.nomor_naskah = nomor_naskah;
+    result.jenis_surat = jenis_surat;
+    await result.save();
+    res.json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   getAllLaporan,
   createLaporan,
@@ -215,4 +250,5 @@ module.exports = {
   ubahStatusLaporan,
   kembalikanSuratSaatTTD,
   kembalikanSuratSaatVerifikasi,
+  updateDataLaporanVerifikasi,
 };

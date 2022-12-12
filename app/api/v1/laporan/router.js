@@ -14,6 +14,7 @@ const {
   kembalikanSuratSaatVerifikasi,
   getOneLaporan,
   ubahStatusRevisi,
+  updateDataLaporanVerifikasi,
 } = require("./controller");
 const { uploadMiddleware } = require("../../../utils/multer");
 
@@ -51,7 +52,7 @@ router.put(
 router.put(
   "/laporan/ubah-status-ttd/:id",
   authenticateUser,
-  authorizeRoles("kasubag,sekretaris"),
+  authorizeRoles("kasubag", "sekretaris"),
   ubahStatusTTD
 );
 router.put(
@@ -83,6 +84,12 @@ router.put(
   authenticateUser,
   authorizeRoles("kasubag", "sekretaris"),
   kembalikanSuratSaatTTD
+);
+router.put(
+  "/laporan/update-data-verifikasi/:id",
+  authenticateUser,
+  authorizeRoles("staff"),
+  updateDataLaporanVerifikasi
 );
 
 module.exports = router;
