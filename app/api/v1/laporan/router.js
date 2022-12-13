@@ -15,6 +15,7 @@ const {
   getOneLaporan,
   ubahStatusRevisi,
   updateDataLaporanVerifikasi,
+  kirimNaskah,
 } = require("./controller");
 const { uploadMiddleware } = require("../../../utils/multer");
 
@@ -90,6 +91,19 @@ router.put(
   authenticateUser,
   authorizeRoles("staff"),
   updateDataLaporanVerifikasi
+);
+router.put(
+  "/laporan/kirim-laporan/:id",
+  authenticateUser,
+  authorizeRoles("kasubag", "sekretaris"),
+  // middlware untuk upload file,
+  uploadMiddleware.fields([
+    {
+      name: "surat_disdik",
+      maxCount: 1,
+    },
+  ]),
+  kirimNaskah
 );
 
 module.exports = router;

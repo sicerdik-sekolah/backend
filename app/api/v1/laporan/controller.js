@@ -224,6 +224,7 @@ const ubahStatusRevisi = async (req, res, next) => {
 
 const updateDataLaporanVerifikasi = async (req, res, next) => {
   try {
+    const { id } = req.params;
     const { nomor_naskah, jenis_surat, yang_menandatangani } = req.body;
     const result = await Laporan.findOne({ _id: id });
 
@@ -235,6 +236,25 @@ const updateDataLaporanVerifikasi = async (req, res, next) => {
     result.jenis_surat = jenis_surat;
     await result.save();
     res.json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// tugasnya untuk membuat default
+const kirimNaskah = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    console.log("path surat_pindah", req.files["surat_disdik"][0].filename);
+    if (!req.files) {
+      console.log("Ada file yang tidak di upload");
+    } else {
+      const result = await Laporan.findOne({ _id: id });
+      result.surat_disdik = req.files["surat_disdik"][0].filename;
+      result.status_laporan = false;
+      await result.save();
+      res.json({ data: result });
+    }
   } catch (error) {
     next(error);
   }
@@ -251,4 +271,5 @@ module.exports = {
   kembalikanSuratSaatTTD,
   kembalikanSuratSaatVerifikasi,
   updateDataLaporanVerifikasi,
+  kirimNaskah,
 };

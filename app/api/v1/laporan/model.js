@@ -73,6 +73,10 @@ const laporanSchema = new mongoose.Schema({
   surat_plh: {
     type: String,
   },
+  surat_disdik: {
+    type: String,
+    default: "",
+  },
   status_laporan: {
     type: Boolean,
     default: true,
@@ -136,7 +140,6 @@ const laporanSchema = new mongoose.Schema({
   nomor_naskah: {
     type: String,
     default: "",
-    required: [true, "Masukan jenis naskah"],
   },
   jenis_surat: {
     type: String,
