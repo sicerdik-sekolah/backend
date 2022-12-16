@@ -146,6 +146,10 @@ const laporanSchema = new mongoose.Schema({
     default: "",
     required: [true, "Masukan jenis surat"],
   },
+  tahun_lulus : {
+    type : String,
+    default : "",
+  },
 });
 
 module.exports = mongoose.model("Laporan", laporanSchema);

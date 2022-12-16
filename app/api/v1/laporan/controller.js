@@ -225,7 +225,7 @@ const ubahStatusRevisi = async (req, res, next) => {
 const updateDataLaporanVerifikasi = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nomor_naskah, jenis_surat, yang_menandatangani } = req.body;
+    const { nomor_naskah, jenis_surat, yang_menandatangani, tanggal_naskah_disposisi } = req.body;
     const result = await Laporan.findOne({ _id: id });
 
     if (!result) {
@@ -234,6 +234,7 @@ const updateDataLaporanVerifikasi = async (req, res, next) => {
     result.yang_menandatangani = yang_menandatangani;
     result.nomor_naskah = nomor_naskah;
     result.jenis_surat = jenis_surat;
+    result.tanggal_naskah_disposisi = tanggal_naskah_disposisi;
     await result.save();
     res.json({ data: result });
   } catch (error) {
