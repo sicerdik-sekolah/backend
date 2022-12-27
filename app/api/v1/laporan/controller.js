@@ -24,11 +24,22 @@ const createLaporan = async (req, res, next) => {
       nis,
       jenis_kelamin,
       alasan_pindah,
-      kelas,
+      tingkatDanKelas,
       nama_orang_tua,
       pekerjaan_orang_tua,
       nomor_naskah,
       jenis_surat,
+      tahun_lulus,
+      alamat_orangtua,
+      noHp_orangtua,
+      alamat_tujuan_sekolah,
+      noTelp_tujuan_sekolah,
+      desa_tujuan_sekolah,
+      kelurahan_tujuan_sekolah,
+      kecamatan_tujuan_sekolah,
+      kabupatenKota_tujuan_sekolah,
+      provinsi_tujuan_sekolah,
+      yang_menandatangani,
     } = req.body;
     console.log("req.files >>>> ", req.files);
     console.log("path surat_pindah", req.files["surat_pindah"][0].filename);
@@ -37,9 +48,9 @@ const createLaporan = async (req, res, next) => {
       console.log("Ada file yang tidak di upload");
     } else {
       let result;
-      const adaSuratPlh = req.files["surat_plh"] ? true : false;
+      const adaSuratLain = req.files["surat_lain_lain"] ? true : false;
 
-      if (adaSuratPlh) {
+      if (adaSuratLain) {
         result = new Laporan({
           tanggal_naskah_masuk,
           nama_siswa,
@@ -48,9 +59,29 @@ const createLaporan = async (req, res, next) => {
           tujuan_sekolah,
           hal,
           nomor_laporan,
+          tempat_tgl_lahir,
+          nis,
+          jenis_kelamin,
+          alasan_pindah,
+          tingkatDanKelas,
+          nama_orang_tua,
+          pekerjaan_orang_tua,
+          nomor_naskah,
+          jenis_surat,
+          tahun_lulus,
+          alamat_orangtua,
+          noHp_orangtua,
+          alamat_tujuan_sekolah,
+          noTelp_tujuan_sekolah,
+          desa_tujuan_sekolah,
+          kelurahan_tujuan_sekolah,
+          kecamatan_tujuan_sekolah,
+          kabupatenKota_tujuan_sekolah,
+          provinsi_tujuan_sekolah,
+          yang_menandatangani,
           surat_pindah: req.files["surat_pindah"][0].filename,
           surat_ortu: req.files["surat_ortu"][0].filename,
-          surat_plh: req.files["surat_plh"][0].filename,
+          surat_lain_lain: req.files["surat_lain_lain"][0].filename,
         });
       } else {
         result = new Laporan({
@@ -61,18 +92,28 @@ const createLaporan = async (req, res, next) => {
           tujuan_sekolah,
           hal,
           nomor_laporan,
-          surat_pindah: req.files["surat_pindah"][0].filename,
-          surat_ortu: req.files["surat_ortu"][0].filename,
           tempat_tgl_lahir,
           nis,
           jenis_kelamin,
           alasan_pindah,
-          kelas,
+          tingkatDanKelas,
           nama_orang_tua,
           pekerjaan_orang_tua,
           nomor_naskah,
           jenis_surat,
-          // surat_plh,
+          tahun_lulus,
+          alamat_orangtua,
+          noHp_orangtua,
+          alamat_tujuan_sekolah,
+          noTelp_tujuan_sekolah,
+          desa_tujuan_sekolah,
+          kelurahan_tujuan_sekolah,
+          kecamatan_tujuan_sekolah,
+          kabupatenKota_tujuan_sekolah,
+          provinsi_tujuan_sekolah,
+          yang_menandatangani,
+          surat_pindah: req.files["surat_pindah"][0].filename,
+          surat_ortu: req.files["surat_ortu"][0].filename,
         });
       }
 
@@ -225,7 +266,12 @@ const ubahStatusRevisi = async (req, res, next) => {
 const updateDataLaporanVerifikasi = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nomor_naskah, jenis_surat, yang_menandatangani, tanggal_naskah_disposisi } = req.body;
+    const {
+      nomor_naskah,
+      jenis_surat,
+      yang_menandatangani,
+      tanggal_naskah_disposisi,
+    } = req.body;
     const result = await Laporan.findOne({ _id: id });
 
     if (!result) {
