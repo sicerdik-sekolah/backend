@@ -1,4 +1,5 @@
 const Akun = require("../../api/v1/akun/model");
+const AkunSekolah = require("../../api/v1/akunSekolah/model");
 const { BadRequestError } = require("../../errors");
 const { StatusCodes } = require("http-status-codes");
 
