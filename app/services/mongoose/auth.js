@@ -1,5 +1,6 @@
 const Superadmin = require("../../api/v1/superadmin/model");
 const Akun = require("../../api/v1/akun/model");
+const AkunSekolah = require('../../api/v1/akunSekolah/model');
 const { BadRequestError, UnauthorizedError } = require("../../errors");
 const { createJWT, createTokenUser } = require("../../utils");
 
@@ -11,8 +12,8 @@ const signinSuperAdmin = async (req) => {
 
   const result =
     (await Superadmin.findOne({ email: email })) ||
-    (await Akun.findOne({ email: email }));
-  // (await Akun.findOne({ email: email }));
+    (await Akun.findOne({ email: email })) || 
+    (await AkunSekolah.findOne({ email: email }));
 
   if (!result) {
     throw new UnauthorizedError("Invalid Credentials");
@@ -28,6 +29,7 @@ const signinSuperAdmin = async (req) => {
   return {
     token,
     email: result.email,
+    id: result.id,
     password: result.password,
     role: result.role,
   };
