@@ -1,13 +1,13 @@
 const { StatusCodes } = require("http-status-codes");
 const {
+
   createAkun,
   gantiStatusAkun,
   resetPassword,
   AkunSekolah,
 } = require("../../../services/mongoose/akun");
-const Akun = require("./model");
-// create
 
+// create
 const createCMSAkun = async (req, res, next) => {
   try {
     const result = await createAkun(req);
@@ -43,25 +43,17 @@ const gantipasswordAkunCMS = async (req, res, next) => {
 
 const getAllUser = async (req, res, next) => {
   try {
-    const result = await Akun.find();
+    const result = await AkunSekolah.find();
+
     res.json({ data: result });
   } catch (error) {
     next(error);
   }
 };
-const getAllUserSekolahDanDinas = async (req, res, next) => {
-  try {
-    const result = await Akun.find();
-    const result1 = await AkunSekolah.find();
-    res.json({ data: [...result, ...result1] });
-  } catch (error) {
-    next(error);
-  }
-};
+
 module.exports = {
   createCMSAkun,
   gantiStatusAkunCMS,
   gantipasswordAkunCMS,
-  getAllUser,
-  getAllUserSekolahDanDinas
+  getAllUser
 };

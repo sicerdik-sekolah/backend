@@ -4,8 +4,7 @@ const {
   createCMSAkun,
   gantiStatusAkunCMS,
   gantipasswordAkunCMS,
-  getAllUser,
-  getAllUserSekolahDanDinas,
+  getAllUser
 } = require("./controller");
 
 const {
@@ -14,34 +13,25 @@ const {
 } = require("../../../middlewares/auth");
 
 router.post(
-  "/akun",
+  "/akun-sekolah",
   authenticateUser,
   authorizeRoles("superadmin"),
   createCMSAkun
 );
 router.put(
-  "/akun/ganti-status-akun/:id",
+  "/akun-sekolah/ganti-status-akun/:id",
   authenticateUser,
   authorizeRoles("superadmin"),
   gantiStatusAkunCMS
 );
 
 router.put(
-  "/akun/reset-password/:id",
+  "/akun-sekolah/reset-password/:id",
   authenticateUser,
   authorizeRoles("superadmin"),
   gantipasswordAkunCMS
 );
-router.get(
-  "/akun/all-akun",
-  authenticateUser,
-  authorizeRoles("superadmin"),
-  getAllUser
-);
-router.get(
-  "/akun/all-akun-dinas-dan-sekolah",
-  authenticateUser,
-  authorizeRoles("superadmin"),
-  getAllUserSekolahDanDinas
-);
+
+router.get("/akun-sekolah/all-akun", getAllUser);
+
 module.exports = router;

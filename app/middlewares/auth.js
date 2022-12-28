@@ -16,12 +16,13 @@ const authenticateUser = async (req, res, next) => {
     }
 
     const payload = isTokenValid({ token });
-
+    console.log("payload middleware >> ", payload)
     //Attach the user   and his permissions to the req object
     req.user = {
       email: payload.email,
       role: payload.role,
-      name: payload.name,
+      nama: payload.nama,
+      tempat : payload.tempat,
       id: payload.userId,
     };
     next();

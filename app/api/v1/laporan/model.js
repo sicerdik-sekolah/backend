@@ -91,6 +91,10 @@ const laporanSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  status_kirim_dari_kepsek: {
+    type: Boolean,
+    default: false,
+  },
   status_ditolak_ttd: {
     type: Boolean,
     default: false,
@@ -123,7 +127,7 @@ const laporanSchema = new mongoose.Schema({
   },
   jenis_kelamin: {
     type: String,
-    enum: ["pria", "wanita"],
+    enum: ["Laki-Laki", "Perempuan"],
     default: "",
     required: [true, "Masukan jeniskelamin"],
   },
@@ -158,7 +162,7 @@ const laporanSchema = new mongoose.Schema({
   tahun_lulus: {
     type: String,
     default: "",
-    required: [true, "Masukan alamat orang tua"],
+    // required: [true, "Masukan alamat orang tua"],
   },
   alamat_orangtua: {
     type: String,
@@ -207,7 +211,7 @@ const laporanSchema = new mongoose.Schema({
   },
   id_sekolah : {
     type : mongoose.Types.ObjectId,
-    required : [true, "Masukan Asal Sekolah yang Membuat Naskah"],
+    // required : [true, "Masukan Asal Sekolah yang Membuat Naskah"],
   }
 });
 

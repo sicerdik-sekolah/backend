@@ -16,16 +16,19 @@ const {
   ubahStatusRevisi,
   updateDataLaporanVerifikasi,
   kirimNaskah,
+  getAllLaporanBySekolah,
+  updateDataLaporanTTDKepsek,
+  ubahStatusTTDKepsek
 } = require("./controller");
 const { uploadMiddleware } = require("../../../utils/multer");
 
 router.get("/laporan", authenticateUser, getAllLaporan);
 router.get("/laporan/:id", authenticateUser, getOneLaporan);
-
+router.get("/laporan-sekolah", authenticateUser, getAllLaporanBySekolah);
 router.post(
   "/laporan",
   authenticateUser,
-  authorizeRoles("staff"),
+  authorizeRoles("staff_sekolah"),
   uploadMiddleware.fields([
     {
       name: "surat_pindah",
@@ -65,6 +68,12 @@ router.put(
   ubahStatusTTD
 );
 router.put(
+  "/laporan/ubah-status-ttd-kepsek/:id",
+  authenticateUser,
+  authorizeRoles("kepala_sekolah"),
+  ubahStatusTTDKepsek
+);
+router.put(
   "/laporan/ubah-status-kirim/:id",
   authenticateUser,
   authorizeRoles("kasubag", "sekretaris"),
@@ -99,6 +108,18 @@ router.put(
   authenticateUser,
   authorizeRoles("staff"),
   updateDataLaporanVerifikasi
+);
+router.put(
+  "/laporan/update-surat-ttd-kepsek/:id",
+  authenticateUser,
+  authorizeRoles("kepala_sekolah"),
+  uploadMiddleware.fields([
+    {
+      name: "surat_pindah",
+      maxCount: 1,
+    }
+  ]),
+  updateDataLaporanTTDKepsek
 );
 router.put(
   "/laporan/kirim-laporan/:id",

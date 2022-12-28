@@ -12,27 +12,29 @@ const getAllLaporan = async (req, res, next) => {
 
 const getAllLaporanBySekolah = async (req, res, next) => {
   try {
-    const {id} = req.user
-    const result = await Laporan.find({id_sekoah: id});
+    const { id, tempat } = req.user;
+    const result = await Laporan.find();
 
-    // const dataFiltered = result.filter((item) => item.id_sekolah === id);
+    const dataFiltered = result.filter((item) => item.asal_sekolah == tempat);
 
-    res.json({ data: result });
+    if (!dataFiltered) {
+      console.log("No Laporan with the id", id);
+    }
+    res.json({ data: dataFiltered });
   } catch (error) {
     next(error);
   }
 };
 
-
-
 const createLaporan = async (req, res, next) => {
   try {
-    const {id} = req.user
+    const { id, tempat } = req.user;
+    console.log("req user >> ", req.user);
     const {
       tanggal_naskah_masuk,
       nama_siswa,
       nisn_siswa,
-      asal_sekolah,
+      // asal_sekolah,
       tujuan_sekolah,
       hal,
       nomor_laporan,
@@ -60,6 +62,7 @@ const createLaporan = async (req, res, next) => {
     console.log("req.files >>>> ", req.files);
     console.log("path surat_pindah", req.files["surat_pindah"][0].filename);
     console.log("path surat_ortu", req.files["surat_ortu"][0].filename);
+    console.log("tempat sekolah ", tempat);
     if (!req.files) {
       console.log("Ada file yang tidak di upload");
     } else {
@@ -79,38 +82,6 @@ const createLaporan = async (req, res, next) => {
           ...querySurat,
           surat_lain_lain: req.files["surat_lain_lain"][0].filename,
         };
-        // result = new Laporan({
-        //   tanggal_naskah_masuk,
-        //   nama_siswa,
-        //   nisn_siswa,
-        //   asal_sekolah,
-        //   tujuan_sekolah,
-        //   hal,
-        //   nomor_laporan,
-        //   tempat_tgl_lahir,
-        //   nis,
-        //   jenis_kelamin,
-        //   alasan_pindah,
-        //   tingkatDanKelas,
-        //   nama_orang_tua,
-        //   pekerjaan_orang_tua,
-        //   nomor_naskah,
-        //   jenis_surat,
-        //   tahun_lulus,
-        //   alamat_orangtua,
-        //   noHp_orangtua,
-        //   alamat_tujuan_sekolah,
-        //   noTelp_tujuan_sekolah,
-        //   desa_tujuan_sekolah,
-        //   kelurahan_tujuan_sekolah,
-        //   kecamatan_tujuan_sekolah,
-        //   kabupatenKota_tujuan_sekolah,
-        //   provinsi_tujuan_sekolah,
-        //   yang_menandatangani,
-        //   surat_pindah: req.files["surat_pindah"][0].filename,
-        //   surat_ortu: req.files["surat_ortu"][0].filename,
-        //   surat_lain_lain: req.files["surat_lain_lain"][0].filename,
-        // });
       }
       if (adaSuratKeteranganLulus) {
         querySurat = {
@@ -128,11 +99,11 @@ const createLaporan = async (req, res, next) => {
       }
 
       result = new Laporan({
-        id_sekolah : id,
+        id_sekolah: id,
         tanggal_naskah_masuk,
         nama_siswa,
         nisn_siswa,
-        asal_sekolah,
+        asal_sekolah: tempat,
         tujuan_sekolah,
         hal,
         nomor_laporan,
@@ -209,6 +180,23 @@ const ubahStatusTTD = async (req, res, next) => {
       console.log("No Laporan with the id ", id);
     }
     result.status_ttd = !result.status_ttd;
+    await result.save();
+    res.json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const ubahStatusTTDKepsek = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const result = await Laporan.findOne({ _id: id });
+
+    if (!result) {
+      console.log("No Laporan with the id ", id);
+    }
+    result.status_ttd_kepsek = !result.status_ttd_kepsek;
     await result.save();
     res.json({ data: result });
   } catch (error) {
@@ -307,10 +295,39 @@ const ubahStatusRevisi = async (req, res, next) => {
   }
 };
 
+const updateDataLaporanTTDKepsek = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const result = await Laporan.findOne({ _id: id });
+    console.log("req files >>> ", req.files);
+    const newSuratTelahTTD = req.files["surat_pindah"][0].filename;
+    if (!result) {
+      console.log("No Laporan with the id ", id);
+    }
+
+    if (!req.files) {
+      console.log("file tidak diupload");
+    } else {
+      console.log(newSuratTelahTTD, "SURAT TTD");
+      result.surat_pindah = newSuratTelahTTD;
+      result.status_kirim_dari_kepsek = !result.status_kirim_dari_kepsek;
+      await result.save();
+      res.json({ data: result });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 const updateDataLaporanVerifikasi = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nomor_naskah, jenis_surat, yang_menandatangani,tanggal_naskah_disposisi } = req.body;
+    const {
+      nomor_naskah,
+      jenis_surat,
+      yang_menandatangani,
+      tanggal_naskah_disposisi,
+    } = req.body;
     const result = await Laporan.findOne({ _id: id });
 
     if (!result) {
@@ -358,4 +375,7 @@ module.exports = {
   kembalikanSuratSaatVerifikasi,
   updateDataLaporanVerifikasi,
   kirimNaskah,
+  getAllLaporanBySekolah,
+  ubahStatusTTDKepsek,
+  updateDataLaporanTTDKepsek,
 };

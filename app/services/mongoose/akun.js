@@ -1,4 +1,5 @@
 const Akun = require("../../api/v1/akun/model");
+const AkunSekolah = require("../../api/v1/akunSekolah/model");
 const { BadRequestError } = require("../../errors");
 const { StatusCodes } = require("http-status-codes");
 
@@ -18,18 +19,33 @@ const createAkun = async (req, res) => {
     throw new BadRequestError("Password and Confirm invalid");
   }
 
-  const result = await Akun.create({
-    email,
-    password,
-    nik,
-    nip,
-    tempat,
-    role,
-    nama,
-    statusAkun,
-  });
+  if (role == "kasubag" || role == "staff" || role == "sekretaris") {
+    const result = await Akun.create({
+      email,
+      password,
+      nik,
+      nip,
+      tempat,
+      role,
+      statusAkun,
+      nama,
+    });
 
-  return result;
+    return result;
+  } else if (role == "staff_sekolah" || role == "kepala_sekolah") {
+    const result = await AkunSekolah.create({
+      email,
+      password,
+      nik,
+      nip,
+      tempat,
+      role,
+      statusAkun,
+      nama
+    });
+
+    return result;
+  }
 };
 
 const gantiStatusAkun = async (req, res, next) => {
@@ -63,4 +79,6 @@ module.exports = {
   createAkun,
   gantiStatusAkun,
   resetPassword,
+  Akun,
+  AkunSekolah
 };
