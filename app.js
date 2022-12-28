@@ -9,6 +9,7 @@ const app = express();
 //Router
 const superAdminRouter = require("./app/api/v1/superadmin/router");
 const akunRouter = require("./app/api/v1/akun/router");
+const akunSekolahRouter = require("./app/api/v1/akunSekolah/router");
 const authRouter = require("./app/api/v1/auth/router");
 const laporanRouter = require("./app/api/v1/laporan/router");
 const v1 = "/api/v1/cms";
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 
 app.use(v1, superAdminRouter);
 app.use(v1, akunRouter);
+app.use(v1, akunSekolahRouter);
 app.use(v1, authRouter);
 app.use(v1, laporanRouter);
 module.exports = app;
