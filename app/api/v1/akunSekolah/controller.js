@@ -4,10 +4,8 @@ const {
   gantiStatusAkun,
   resetPassword,
 } = require("../../../services/mongoose/akun");
-// const AkunSekolah = require("../akunSekolah/model");
 
 // create
-
 const createCMSAkun = async (req, res, next) => {
   try {
     const result = await createAkun(req);
@@ -36,6 +34,15 @@ const gantipasswordAkunCMS = async (req, res, next) => {
     res.status(StatusCodes.CREATED).json({
       data: result,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllUser = async (req, res, next) => {
+  try {
+    const result = await Akun.find();
+    res.json({ data: result });
   } catch (error) {
     next(error);
   }
