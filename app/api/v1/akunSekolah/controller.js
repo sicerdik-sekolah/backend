@@ -52,4 +52,5 @@ module.exports = {
   createCMSAkun,
   gantiStatusAkunCMS,
   gantipasswordAkunCMS,
+  getAllUser
 };
