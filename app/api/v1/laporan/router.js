@@ -21,6 +21,7 @@ const { uploadMiddleware } = require("../../../utils/multer");
 
 router.get("/laporan", authenticateUser, getAllLaporan);
 router.get("/laporan/:id", authenticateUser, getOneLaporan);
+router.get("/laporan-sekolah", authenticateUser, getAllLaporanBySekolah);
 
 router.post(
   "/laporan",
