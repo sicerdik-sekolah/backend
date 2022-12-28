@@ -4,6 +4,7 @@ const {
   createCMSAkun,
   gantiStatusAkunCMS,
   gantipasswordAkunCMS,
+  getAllUser
 } = require("./controller");
 
 const {
