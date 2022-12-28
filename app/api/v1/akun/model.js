@@ -4,6 +4,11 @@ const { model, Schema } = mongoose;
 
 let akunSchema = Schema(
   {
+    nama: {
+      type: String,
+      unique: true,
+      required: [true, "Nama harus diisi"],
+    },
     email: {
       type: String,
       unique: true,

@@ -40,8 +40,17 @@ const gantipasswordAkunCMS = async (req, res, next) => {
   }
 };
 
+const getAllUser = async (req, res, next) => {
+  try {
+    const result = await Akun.find();
+    res.json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   createCMSAkun,
   gantiStatusAkunCMS,
   gantipasswordAkunCMS,
+  getAllUser
 };

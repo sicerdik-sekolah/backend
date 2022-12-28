@@ -36,7 +36,15 @@ router.post(
       maxCount: 1,
     },
     {
-      name: "surat_plh",
+      name: "surat_lain_lain",
+      maxCount: 1,
+    },
+    {
+      name: "surat_keterangan_lulus",
+      maxCount: 1,
+    },
+    {
+      name: "surat_dinas_pendidikan_setempat",
       maxCount: 1,
     },
   ]),

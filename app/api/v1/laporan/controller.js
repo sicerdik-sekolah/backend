@@ -10,8 +10,24 @@ const getAllLaporan = async (req, res, next) => {
   }
 };
 
+const getAllLaporanBySekolah = async (req, res, next) => {
+  try {
+    const {id} = req.user
+    const result = await Laporan.find({id_sekoah: id});
+
+    // const dataFiltered = result.filter((item) => item.id_sekolah === id);
+
+    res.json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
 const createLaporan = async (req, res, next) => {
   try {
+    const {id} = req.user
     const {
       tanggal_naskah_masuk,
       nama_siswa,
@@ -24,11 +40,22 @@ const createLaporan = async (req, res, next) => {
       nis,
       jenis_kelamin,
       alasan_pindah,
-      kelas,
+      tingkatDanKelas,
       nama_orang_tua,
       pekerjaan_orang_tua,
       nomor_naskah,
       jenis_surat,
+      tahun_lulus,
+      alamat_orangtua,
+      noHp_orangtua,
+      alamat_tujuan_sekolah,
+      noTelp_tujuan_sekolah,
+      desa_tujuan_sekolah,
+      kelurahan_tujuan_sekolah,
+      kecamatan_tujuan_sekolah,
+      kabupatenKota_tujuan_sekolah,
+      provinsi_tujuan_sekolah,
+      yang_menandatangani,
     } = req.body;
     console.log("req.files >>>> ", req.files);
     console.log("path surat_pindah", req.files["surat_pindah"][0].filename);
@@ -37,44 +64,102 @@ const createLaporan = async (req, res, next) => {
       console.log("Ada file yang tidak di upload");
     } else {
       let result;
-      const adaSuratPlh = req.files["surat_plh"] ? true : false;
-
-      if (adaSuratPlh) {
-        result = new Laporan({
-          tanggal_naskah_masuk,
-          nama_siswa,
-          nisn_siswa,
-          asal_sekolah,
-          tujuan_sekolah,
-          hal,
-          nomor_laporan,
-          surat_pindah: req.files["surat_pindah"][0].filename,
-          surat_ortu: req.files["surat_ortu"][0].filename,
-          surat_plh: req.files["surat_plh"][0].filename,
-        });
-      } else {
-        result = new Laporan({
-          tanggal_naskah_masuk,
-          nama_siswa,
-          nisn_siswa,
-          asal_sekolah,
-          tujuan_sekolah,
-          hal,
-          nomor_laporan,
-          surat_pindah: req.files["surat_pindah"][0].filename,
-          surat_ortu: req.files["surat_ortu"][0].filename,
-          tempat_tgl_lahir,
-          nis,
-          jenis_kelamin,
-          alasan_pindah,
-          kelas,
-          nama_orang_tua,
-          pekerjaan_orang_tua,
-          nomor_naskah,
-          jenis_surat,
-          // surat_plh,
-        });
+      const adaSuratLain = req.files["surat_lain_lain"] ? true : false;
+      const adaSuratKeteranganLulus = req.files["surat_keterangan_lulus"]
+        ? true
+        : false;
+      const adaSuratDinasPendidikanSetempat = req.files[
+        "surat_dinas_pendidikan_setempat"
+      ]
+        ? true
+        : false;
+      let querySurat = {};
+      if (adaSuratLain) {
+        querySurat = {
+          ...querySurat,
+          surat_lain_lain: req.files["surat_lain_lain"][0].filename,
+        };
+        // result = new Laporan({
+        //   tanggal_naskah_masuk,
+        //   nama_siswa,
+        //   nisn_siswa,
+        //   asal_sekolah,
+        //   tujuan_sekolah,
+        //   hal,
+        //   nomor_laporan,
+        //   tempat_tgl_lahir,
+        //   nis,
+        //   jenis_kelamin,
+        //   alasan_pindah,
+        //   tingkatDanKelas,
+        //   nama_orang_tua,
+        //   pekerjaan_orang_tua,
+        //   nomor_naskah,
+        //   jenis_surat,
+        //   tahun_lulus,
+        //   alamat_orangtua,
+        //   noHp_orangtua,
+        //   alamat_tujuan_sekolah,
+        //   noTelp_tujuan_sekolah,
+        //   desa_tujuan_sekolah,
+        //   kelurahan_tujuan_sekolah,
+        //   kecamatan_tujuan_sekolah,
+        //   kabupatenKota_tujuan_sekolah,
+        //   provinsi_tujuan_sekolah,
+        //   yang_menandatangani,
+        //   surat_pindah: req.files["surat_pindah"][0].filename,
+        //   surat_ortu: req.files["surat_ortu"][0].filename,
+        //   surat_lain_lain: req.files["surat_lain_lain"][0].filename,
+        // });
       }
+      if (adaSuratKeteranganLulus) {
+        querySurat = {
+          ...querySurat,
+          surat_keterangan_lulus:
+            req.files["surat_keterangan_lulus"][0].filename,
+        };
+      }
+      if (adaSuratDinasPendidikanSetempat) {
+        querySurat = {
+          ...querySurat,
+          surat_dinas_pendidikan_setempat:
+            req.files["surat_dinas_pendidikan_setempat"][0].filename,
+        };
+      }
+
+      result = new Laporan({
+        id_sekolah : id,
+        tanggal_naskah_masuk,
+        nama_siswa,
+        nisn_siswa,
+        asal_sekolah,
+        tujuan_sekolah,
+        hal,
+        nomor_laporan,
+        tempat_tgl_lahir,
+        nis,
+        jenis_kelamin,
+        alasan_pindah,
+        tingkatDanKelas,
+        nama_orang_tua,
+        pekerjaan_orang_tua,
+        nomor_naskah,
+        jenis_surat,
+        tahun_lulus,
+        alamat_orangtua,
+        noHp_orangtua,
+        alamat_tujuan_sekolah,
+        noTelp_tujuan_sekolah,
+        desa_tujuan_sekolah,
+        kelurahan_tujuan_sekolah,
+        kecamatan_tujuan_sekolah,
+        kabupatenKota_tujuan_sekolah,
+        provinsi_tujuan_sekolah,
+        yang_menandatangani,
+        surat_pindah: req.files["surat_pindah"][0].filename,
+        surat_ortu: req.files["surat_ortu"][0].filename,
+        ...querySurat,
+      });
 
       await result.save();
 
@@ -225,7 +310,7 @@ const ubahStatusRevisi = async (req, res, next) => {
 const updateDataLaporanVerifikasi = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nomor_naskah, jenis_surat, yang_menandatangani } = req.body;
+    const { nomor_naskah, jenis_surat, yang_menandatangani,tanggal_naskah_disposisi } = req.body;
     const result = await Laporan.findOne({ _id: id });
 
     if (!result) {
@@ -234,6 +319,7 @@ const updateDataLaporanVerifikasi = async (req, res, next) => {
     result.yang_menandatangani = yang_menandatangani;
     result.nomor_naskah = nomor_naskah;
     result.jenis_surat = jenis_surat;
+    result.tanggal_naskah_disposisi = tanggal_naskah_disposisi;
     await result.save();
     res.json({ data: result });
   } catch (error) {

@@ -11,6 +11,7 @@ const createAkun = async (req, res) => {
     nik,
     nip,
     tempat,
+    nama,
     statusAkun,
   } = req.body;
   if (password != confirmPassword) {
@@ -24,6 +25,7 @@ const createAkun = async (req, res) => {
     nip,
     tempat,
     role,
+    nama,
     statusAkun,
   });
 

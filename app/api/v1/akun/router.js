@@ -4,6 +4,7 @@ const {
   createCMSAkun,
   gantiStatusAkunCMS,
   gantipasswordAkunCMS,
+  getAllUser,
 } = require("./controller");
 
 const {
@@ -29,5 +30,11 @@ router.put(
   authenticateUser,
   authorizeRoles("superadmin"),
   gantipasswordAkunCMS
+);
+router.get(
+  "/akun/all-akun",
+  authenticateUser,
+  authorizeRoles("superadmin"),
+  getAllUser
 );
 module.exports = router;

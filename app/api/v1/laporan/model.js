@@ -70,12 +70,22 @@ const laporanSchema = new mongoose.Schema({
     type: String,
     required: [true, "upload surat permohonan ortu"],
   },
-  surat_plh: {
+  surat_lain_lain: {
+    type: String,
+  },
+  surat_keterangan_lulus: {
+    type: String,
+  },
+  surat_dinas_pendidikan_setempat: {
     type: String,
   },
   surat_disdik: {
     type: String,
     default: "",
+  },
+  status_ttd_kepsek: {
+    type: Boolean,
+    default: false,
   },
   status_laporan: {
     type: Boolean,
@@ -115,14 +125,14 @@ const laporanSchema = new mongoose.Schema({
     type: String,
     enum: ["pria", "wanita"],
     default: "",
-    required: [true, "Masukan alamat"],
+    required: [true, "Masukan jeniskelamin"],
   },
   alasan_pindah: {
     type: String,
     default: "",
     required: [true, "Masukan keterangan alasan pindah"],
   },
-  kelas: {
+  tingkatDanKelas: {
     type: String,
     default: "",
     required: [true, "Masukan kelas"],
@@ -144,8 +154,61 @@ const laporanSchema = new mongoose.Schema({
   jenis_surat: {
     type: String,
     default: "",
-    required: [true, "Masukan jenis surat"],
   },
+  tahun_lulus: {
+    type: String,
+    default: "",
+    required: [true, "Masukan alamat orang tua"],
+  },
+  alamat_orangtua: {
+    type: String,
+    default: "",
+    required: [true, "Masukan alamat orang tua"],
+  },
+  noHp_orangtua: {
+    type: String,
+    default: "",
+    required: [true, "Masukan noHp orang tua"],
+  },
+  alamat_tujuan_sekolah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan alamat tujuan sekolah"],
+  },
+  noTelp_tujuan_sekolah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan noTelp tujuan sekolah"],
+  },
+  desa_tujuan_sekolah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan desa tujuan sekolah"],
+  },
+  kelurahan_tujuan_sekolah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan kelurahan tujuan sekolah"],
+  },
+  kecamatan_tujuan_sekolah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan kecamatan tujuan sekolah"],
+  },
+  kabupatenKota_tujuan_sekolah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan kabupatenKota tujuan sekolah"],
+  },
+  provinsi_tujuan_sekolah: {
+    type: String,
+    default: "",
+    required: [true, "Masukan provinsi tujuan sekolah"],
+  },
+  id_sekolah : {
+    type : mongoose.Types.ObjectId,
+    required : [true, "Masukan Asal Sekolah yang Membuat Naskah"],
+  }
 });
 
 module.exports = mongoose.model("Laporan", laporanSchema);

@@ -27,9 +27,13 @@ const signinSuperAdmin = async (req) => {
 
   return {
     token,
+    nama : result.nama,
     email: result.email,
+    id: result._id,
     password: result.password,
     role: result.role,
+    nip : result.nip,
+    statusAkun:result.statusAkun
   };
 };
 
