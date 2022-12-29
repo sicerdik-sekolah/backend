@@ -61,10 +61,7 @@ const laporanSchema = new mongoose.Schema({
   },
   surat_pindah: {
     type: String,
-    required: [
-      true,
-      "upload surat pindah dari sekolah / surat masuk ke sekolah",
-    ],
+    // \ 
   },
   surat_ortu: {
     type: String,
@@ -209,10 +206,10 @@ const laporanSchema = new mongoose.Schema({
     default: "",
     required: [true, "Masukan provinsi tujuan sekolah"],
   },
-  id_sekolah : {
-    type : mongoose.Types.ObjectId,
+  id_sekolah: {
+    type: mongoose.Types.ObjectId,
     // required : [true, "Masukan Asal Sekolah yang Membuat Naskah"],
-  }
+  },
 });
 
 module.exports = mongoose.model("Laporan", laporanSchema);
