@@ -4,21 +4,39 @@ const { BadRequestError } = require("../../errors");
 const { StatusCodes } = require("http-status-codes");
 
 const createAkun = async (req, res) => {
-  const {
-    password,
-    role,
-    confirmPassword,
-    email,
-    nik,
-    nip,
-    tempat,
-    statusAkun,
-  } = req.body;
-  if (password != confirmPassword) {
-    throw new BadRequestError("Password and Confirm invalid");
-  }
+  // const {
+  //   password,
+  //   role,
+  //   confirmPassword,
+  //   email,
+  //   nik,
+  //   nip,
+  //   tempat,
+  //   nama,
+  //   statusAkun,
+  // } = req.body;
+  // if (password != confirmPassword) {
+  //   throw new BadRequestError("Password and Confirm invalid");
+  // }
 
-if(role == "kasubag" || role == "staff" || role == "sekretaris") {
+  const { role } = req.body;
+
+  if (role == "kasubag" || role == "staff" || role == "sekretaris") {
+    const {
+      password,
+      role,
+      confirmPassword,
+      email,
+      nik,
+      nip,
+      tempat,
+      nama,
+      statusAkun,
+    } = req.body;
+    if (password != confirmPassword) {
+      throw new BadRequestError("Password and Confirm invalid");
+    }
+
     const result = await Akun.create({
       email,
       password,
@@ -27,12 +45,30 @@ if(role == "kasubag" || role == "staff" || role == "sekretaris") {
       tempat,
       role,
       statusAkun,
+      nama,
     });
 
     return result;
-  }
 
-  else if(role == "staff_sekolah" || role == "kepala_sekolah"){
+  } else if (role == "staff_sekolah" || role == "kepala_sekolah") {
+    const {
+      password,
+      role,
+      confirmPassword,
+      email,
+      nik,
+      nip,
+      tempat,
+      nama,
+      kopSurat,
+      alamatSurat,
+      emailSurat,
+      statusAkun,
+    } = req.body;
+    if (password != confirmPassword) {
+      throw new BadRequestError("Password and Confirm invalid");
+    }
+
     const result = await AkunSekolah.create({
       email,
       password,
@@ -41,9 +77,14 @@ if(role == "kasubag" || role == "staff" || role == "sekretaris") {
       tempat,
       role,
       statusAkun,
+      nama,
+      kopSurat,
+      alamatSurat,
+      emailSurat
     });
 
-  return result;
+    return result;
+  }
 };
 
 const gantiStatusAkun = async (req, res, next) => {
@@ -73,8 +114,11 @@ const resetPassword = async (req, res, next) => {
     next(error);
   }
 };
+
 module.exports = {
   createAkun,
   gantiStatusAkun,
   resetPassword,
+  Akun,
+  AkunSekolah
 };
