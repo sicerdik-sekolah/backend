@@ -4,6 +4,11 @@ const { model, Schema } = mongoose;
 
 let akunSekolahSchema = Schema(
     {
+        nama: {
+            type: String,
+            unique: true,
+            required: [true, 'Nama belum diisi!']
+        },
         email: {
             type: String,
             unique: true,
@@ -30,6 +35,19 @@ let akunSekolahSchema = Schema(
             type: String,
             required: [true, 'Nama tempat belum diisi']
         },
+        kopSurat: {
+            type: String,
+            required: [true, 'Kop surat belum diisi']
+        },
+        // alamatSurat: {
+        //     type: String,
+        //     required: [true, 'Alamat sekolah untuk surat belum diisi']
+        // },
+        // emailSurat: {
+        //     type: String,
+        //     default: ""
+        //     required: [true, 'email sekolah untuk surat belum diisi']
+        // },
         statusAkun: {
             type: Boolean,
             default: true
