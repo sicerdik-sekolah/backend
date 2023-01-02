@@ -16,14 +16,16 @@ const authenticateUser = async (req, res, next) => {
     }
 
     const payload = isTokenValid({ token });
-    console.log("payload middleware >> ", payload)
+    console.log("payload middleware >> ", payload);
     //Attach the user   and his permissions to the req object
     req.user = {
       email: payload.email,
       role: payload.role,
       nama: payload.nama,
-      tempat : payload.tempat,
+      tempat: payload.tempat,
       id: payload.userId,
+      alamatSurat: payload.alamatSurat,
+      emailSurat: payload.emailSurat,
     };
     next();
   } catch (error) {

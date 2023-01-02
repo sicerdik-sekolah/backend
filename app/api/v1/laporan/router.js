@@ -18,7 +18,8 @@ const {
   kirimNaskah,
   getAllLaporanBySekolah,
   updateDataLaporanTTDKepsek,
-  ubahStatusTTDKepsek
+  ubahStatusTTDKepsek,
+  ubahStatusKirimDariKepsek,
 } = require("./controller");
 const { uploadMiddleware } = require("../../../utils/multer");
 
@@ -80,6 +81,12 @@ router.put(
   ubahStatusKirim
 );
 router.put(
+  "/laporan/ubah-status-kirim-kepsek/:id",
+  authenticateUser,
+  authorizeRoles("kepala_sekolah"),
+  ubahStatusKirimDariKepsek
+);
+router.put(
   "/laporan/ubah-status-revisi/:id",
   authenticateUser,
   authorizeRoles("staff"),
@@ -117,7 +124,7 @@ router.put(
     {
       name: "surat_pindah",
       maxCount: 1,
-    }
+    },
   ]),
   updateDataLaporanTTDKepsek
 );

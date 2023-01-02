@@ -26,18 +26,49 @@ const signinSuperAdmin = async (req) => {
   }
 
   const token = createJWT({ payload: createTokenUser(result) });
-  console.log("result signin >>> ", result)
-  return {
-    token,
-    nama: result.nama,
-    email: result.email,
-    id: result._id,
-    tempat : result.tempat,
-    password: result.password,
-    role: result.role,
-    nip: result.nip,
-    statusAkun: result.statusAkun,
-  };
+  console.log("result signin >>> ", result);
+  if (result.role === "kasubag" || result.role === "sekretaris") {
+    return {
+      token,
+      nama: result.nama,
+      email: result.email,
+      id: result._id,
+      tempat: result.tempat,
+      password: result.password,
+      role: result.role,
+      nip: result.nip,
+      statusAkun: result.statusAkun,
+    };
+  } else if (
+    result.role === "staff_sekolah" ||
+    result.role === "kepala_sekolah"
+  ) {
+    return {
+      token,
+      nama: result.nama,
+      email: result.email,
+      id: result._id,
+      tempat: result.tempat,
+      password: result.password,
+      role: result.role,
+      nip: result.nip,
+      alamatSurat: result.alamatSurat,
+      emailSurat: result.emailSurat,
+      statusAkun: result.statusAkun,
+    };
+  } else {
+    return {
+      token,
+      nama: result.nama,
+      email: result.email,
+      id: result._id,
+      tempat: result.tempat,
+      password: result.password,
+      role: result.role,
+      nip: result.nip,
+      statusAkun: result.statusAkun,
+    };
+  }
 };
 
 // const signinAkun = async (req) => {

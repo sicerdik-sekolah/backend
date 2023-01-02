@@ -60,13 +60,15 @@ const createLaporan = async (req, res, next) => {
       yang_menandatangani,
     } = req.body;
     console.log("req.files >>>> ", req.files);
-    console.log("path surat_pindah", req.files["surat_pindah"][0].filename);
-    console.log("path surat_ortu", req.files["surat_ortu"][0].filename);
+    // console.log("path surat_pindah", req.files["surat_pindah"][0].filename);
+    // console.log("path surat_ortu", req.files["surat_ortu"][0].filename);
     console.log("tempat sekolah ", tempat);
     if (!req.files) {
       console.log("Ada file yang tidak di upload");
     } else {
       let result;
+
+      const adaSuratPindah = req.files["surat_pindah"] ? true : false;
       const adaSuratLain = req.files["surat_lain_lain"] ? true : false;
       const adaSuratKeteranganLulus = req.files["surat_keterangan_lulus"]
         ? true
@@ -77,6 +79,12 @@ const createLaporan = async (req, res, next) => {
         ? true
         : false;
       let querySurat = {};
+      if (adaSuratPindah) {
+        querySurat = {
+          ...querySurat,
+          surat_pindah: req.files["surat_pindah"][0].filename,
+        };
+      }
       if (adaSuratLain) {
         querySurat = {
           ...querySurat,
@@ -127,7 +135,7 @@ const createLaporan = async (req, res, next) => {
         kabupatenKota_tujuan_sekolah,
         provinsi_tujuan_sekolah,
         yang_menandatangani,
-        surat_pindah: req.files["surat_pindah"][0].filename,
+        // surat_pindah: req.files["surat_pindah"][0].filename,
         surat_ortu: req.files["surat_ortu"][0].filename,
         ...querySurat,
       });
@@ -204,6 +212,22 @@ const ubahStatusTTDKepsek = async (req, res, next) => {
   }
 };
 
+const ubahStatusKirimDariKepsek = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const result = await Laporan.findOne({ _id: id });
+
+    if (!result) {
+      console.log("No Laporan with the id ", id);
+    }
+    result.status_kirim_dari_kepsek = !result.status_kirim_dari_kepsek;
+    await result.save();
+    res.json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+};
 const ubahStatusKirim = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -378,4 +402,5 @@ module.exports = {
   getAllLaporanBySekolah,
   ubahStatusTTDKepsek,
   updateDataLaporanTTDKepsek,
+  ubahStatusKirimDariKepsek,
 };

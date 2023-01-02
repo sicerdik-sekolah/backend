@@ -33,6 +33,7 @@ const createAkun = async (req, res) => {
 
     return result;
   } else if (role == "staff_sekolah" || role == "kepala_sekolah") {
+    const { alamatSurat, emailSurat } = req.body;
     const result = await AkunSekolah.create({
       email,
       password,
@@ -41,7 +42,9 @@ const createAkun = async (req, res) => {
       tempat,
       role,
       statusAkun,
-      nama
+      alamatSurat,
+      emailSurat,
+      nama,
     });
 
     return result;
@@ -80,5 +83,5 @@ module.exports = {
   gantiStatusAkun,
   resetPassword,
   Akun,
-  AkunSekolah
+  AkunSekolah,
 };
