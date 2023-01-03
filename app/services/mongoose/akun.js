@@ -4,22 +4,39 @@ const { BadRequestError } = require("../../errors");
 const { StatusCodes } = require("http-status-codes");
 
 const createAkun = async (req, res) => {
-  const {
-    password,
-    role,
-    confirmPassword,
-    email,
-    nik,
-    nip,
-    tempat,
-    nama,
-    statusAkun,
-  } = req.body;
-  if (password != confirmPassword) {
-    throw new BadRequestError("Password and Confirm invalid");
-  }
+  // const {
+  //   password,
+  //   role,
+  //   confirmPassword,
+  //   email,
+  //   nik,
+  //   nip,
+  //   tempat,
+  //   nama,
+  //   statusAkun,
+  // } = req.body;
+  // if (password != confirmPassword) {
+  //   throw new BadRequestError("Password and Confirm invalid");
+  // }
+
+  const { role } = req.body;
 
   if (role == "kasubag" || role == "staff" || role == "sekretaris") {
+    const {
+      password,
+      role,
+      confirmPassword,
+      email,
+      nik,
+      nip,
+      tempat,
+      nama,
+      statusAkun,
+    } = req.body;
+    if (password != confirmPassword) {
+      throw new BadRequestError("Password and Confirm invalid");
+    }
+
     const result = await Akun.create({
       email,
       password,
@@ -32,8 +49,26 @@ const createAkun = async (req, res) => {
     });
 
     return result;
+
   } else if (role == "staff_sekolah" || role == "kepala_sekolah") {
-    const { alamatSurat, emailSurat } = req.body;
+    const {
+      password,
+      role,
+      confirmPassword,
+      email,
+      nik,
+      nip,
+      tempat,
+      nama,
+      kopSurat,
+      alamatSurat,
+      emailSurat,
+      statusAkun,
+    } = req.body;
+    if (password != confirmPassword) {
+      throw new BadRequestError("Password and Confirm invalid");
+    }
+
     const result = await AkunSekolah.create({
       email,
       password,
@@ -42,9 +77,10 @@ const createAkun = async (req, res) => {
       tempat,
       role,
       statusAkun,
-      alamatSurat,
-      emailSurat,
       nama,
+      kopSurat,
+      alamatSurat,
+      emailSurat
     });
 
     return result;
@@ -78,10 +114,11 @@ const resetPassword = async (req, res, next) => {
     next(error);
   }
 };
+
 module.exports = {
   createAkun,
   gantiStatusAkun,
   resetPassword,
   Akun,
-  AkunSekolah,
+  AkunSekolah
 };
