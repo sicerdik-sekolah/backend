@@ -91,7 +91,7 @@ const gantiStatusAkun = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const result = await Akun.findById(id);
+    const result = (await Akun.findById(id)) || (await AkunSekolah.findById(id));
 
     result.statusAkun = !result.statusAkun;
     await result.save();
@@ -105,7 +105,7 @@ const resetPassword = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { password } = req.body;
-    const result = await Akun.findById(id);
+    const result = (await Akun.findById(id)) || (await AkunSekolah.findById(id));
 
     result.password = password;
     await result.save();
