@@ -61,7 +61,7 @@ const laporanSchema = new mongoose.Schema({
   },
   surat_pindah: {
     type: String,
-    // \ 
+    // \
   },
   surat_ortu: {
     type: String,
@@ -209,6 +209,18 @@ const laporanSchema = new mongoose.Schema({
   id_sekolah: {
     type: mongoose.Types.ObjectId,
     // required : [true, "Masukan Asal Sekolah yang Membuat Naskah"],
+  },
+  status_ditolak: {
+    type: Boolean,
+    default: false,
+  },
+  komentar_ditolak_verifikasi: {
+    type: String,
+    default: "",
+  },
+  komentar_ditolak_ttd: {
+    type: String,
+    default: "",
   },
 });
 

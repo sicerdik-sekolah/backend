@@ -368,7 +368,6 @@ const updateDataLaporanVerifikasi = async (req, res, next) => {
   }
 };
 
-// tugasnya untuk membuat default
 const kirimNaskah = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -382,6 +381,39 @@ const kirimNaskah = async (req, res, next) => {
       await result.save();
       res.json({ data: result });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// balikan surat yang nggak terverifikasi ke sekolah
+const balikanNaskahKeSekolah = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { komentar_verifikasi } = req.body;
+    const result = await Laporan.findById(id);
+
+    result.status_ditolak = true;
+    result.komentar_ditolak_verifikasi = komentar_verifikasi;
+    await result.save();
+    res.json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Balikan surat yang nggak layak di ttd di setelah di verifikasi oleh
+// staff disdik kemudian kasubag ngecek, rupanya ada yang kurnag, jadi gagal ttd.
+const balikanNaskahKeStaff = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { komentar_verifikasi } = req.body;
+    const result = await Laporan.findById(id);
+
+    result.status_ditolak = true;
+    result.komentar_ditolak_ttd = komentar_verifikasi;
+    await result.save();
+    res.json({ data: result });
   } catch (error) {
     next(error);
   }
@@ -403,4 +435,6 @@ module.exports = {
   ubahStatusTTDKepsek,
   updateDataLaporanTTDKepsek,
   ubahStatusKirimDariKepsek,
+  balikanNaskahKeSekolah,
+  balikanNaskahKeStaff,
 };
