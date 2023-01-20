@@ -20,6 +20,8 @@ const {
   updateDataLaporanTTDKepsek,
   ubahStatusTTDKepsek,
   ubahStatusKirimDariKepsek,
+  balikanNaskahKeSekolah,
+  balikanNaskahKeStaff,
 } = require("./controller");
 const { uploadMiddleware } = require("../../../utils/multer");
 
@@ -140,6 +142,20 @@ router.put(
     },
   ]),
   kirimNaskah
+);
+
+/// Router Terbaru
+router.put(
+  "/laporan/balikan-naskahbermasalah-kesekolah/:id",
+  authenticateUser,
+  authorizeRoles("staff"),
+  balikanNaskahKeSekolah
+);
+router.put(
+  "/laporan/balikan-naskahbermasalah-kestaff/:id",
+  authenticateUser,
+  authorizeRoles("kasubag", "sekretaris"),
+  balikanNaskahKeStaff
 );
 
 module.exports = router;
